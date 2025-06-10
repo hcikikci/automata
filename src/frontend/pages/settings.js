@@ -52,9 +52,7 @@ export class SettingsPage {
     setupStateSubscriptions() {
         // Subscribe to theme changes
         const unsubscribeTheme = subscribeToState('theme', (theme) => {
-            if (this.isActive) {
-                this.updateThemeUI(theme);
-            }
+            this.updateThemeUI(theme);
         });
         
         this.stateUnsubscribers.push(unsubscribeTheme);
