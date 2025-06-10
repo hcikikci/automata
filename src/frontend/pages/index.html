@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automata - Modern Python Eel App</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='18' font-size='18'>🤖</text></svg>">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/components.css">
+    <link rel="stylesheet" href="../styles/themes.css">
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body class="theme-light">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-cube"></i>
+            <span>Automata</span>
+        </div>
+        <div class="nav-actions">
+            <button id="theme-toggle" class="btn-icon" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <a href="#dashboard" class="menu-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#system" class="menu-item" data-section="system">
+                    <i class="fas fa-desktop"></i>
+                    <span>System Info</span>
+                </a>
+                <a href="#settings" class="menu-item" data-section="settings">
+                    <i class="fas fa-cogs"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <section class="content-area">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section active">
+                <div class="section-header">
+                    <h1>Dashboard</h1>
+                    <p>Welcome to your modern Python Eel application with health monitoring</p>
+                </div>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Application Status</h3>
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat-item">
+                                <span class="stat-label">App Version</span>
+                                <span class="stat-value" id="app-version">1.0.0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Status</span>
+                                <span class="stat-value status-active">Active</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Frontend Uptime</span>
+                                <span class="stat-value" id="uptime">00:00:00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Health Monitoring</h3>
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <div class="card-content">
+                            <button class="btn btn-primary" onclick="testBackendConnection()">
+                                <i class="fas fa-satellite-dish"></i>
+                                Test Connection
+                            </button>
+                            <button class="btn btn-success" onclick="refreshHealthStatus()">
+                                <i class="fas fa-heartbeat"></i>
+                                Check Health
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportSystemData()">
+                                <i class="fas fa-download"></i>
+                                Export Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Section -->
+            <div id="system-section" class="section">
+                <div class="section-header">
+                    <h1>System Information</h1>
+                    <p>View detailed system metrics and health information</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>System Overview</h3>
+                        <button class="btn btn-sm" onclick="refreshSystemInfo()">
+                            <i class="fas fa-sync"></i>
+                            Refresh
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div id="system-info" class="system-info">
+                            <div class="loading">Loading system information...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="section">
+                <div class="section-header">
+                    <h1>Settings</h1>
+                    <p>Configure your application preferences</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Appearance</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="setting-item">
+                            <label for="theme-select">Theme</label>
+                            <select id="theme-select" class="form-control">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Backend Information</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="info-item">
+                            <span class="info-label">Available Endpoints</span>
+                        </div>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li><code>get_health_status()</code> - Comprehensive health monitoring</li>
+                            <li><code>get_quick_health()</code> - Quick health check</li>
+                            <li><code>get_system_info()</code> - System information</li>
+                            <li><code>ping()</code> - Backend connectivity test</li>
+                            <li><code>get_features_status()</code> - Application features status</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="/eel.js"></script>
+    <!-- Load components first -->
+    <script src="../assets/js/components.js"></script>
+    <!-- Load main application as ES6 module -->
+    <script type="module" src="../lib/app.js"></script>
+    <!-- Global functions bridge -->
+    <script>
+        // Bridge functions for HTML onclick handlers
+        async function testBackendConnection() {
+            const { testBackendConnection } = await import('../pages/dashboard.js');
+            return testBackendConnection();
+        }
+        
+        async function refreshHealthStatus() {
+            const { refreshHealthStatus } = await import('../pages/dashboard.js');
+            return refreshHealthStatus();
+        }
+        
+        async function exportSystemData() {
+            const { exportSystemData } = await import('../pages/dashboard.js');
+            return exportSystemData();
+        }
+        
+        async function refreshSystemInfo() {
+            const { refreshSystemInfo } = await import('../pages/system.js');
+            return refreshSystemInfo();
+        }
+    </script>
+</body>
+</html> 
